@@ -9,11 +9,15 @@ import tornadofx.*
 class Styles : Stylesheet() {
     companion object {
         val heading by cssclass()
+        val zip by cssclass()
     }
 
     init {
         root {
             backgroundColor += Tile.BACKGROUND
+        }
+        s(zip) {
+            backgroundColor += Tile.BLUE
         }
         label and heading {
             padding = box(10.px)

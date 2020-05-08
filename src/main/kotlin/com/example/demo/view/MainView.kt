@@ -1,15 +1,18 @@
 package com.example.demo.view
 
 import com.example.demo.app.HEIGHT
+import com.example.demo.app.Styles
 import com.example.demo.app.TITLE
 import com.example.demo.app.WIDTH
 import eu.hansolo.medusa.Clock
 import eu.hansolo.medusa.ClockBuilder
+import eu.hansolo.tilesfx.Tile
 import eu.hansolo.tilesfx.Tile.*
 import eu.hansolo.tilesfx.TileBuilder
 import eu.hansolo.tilesfx.tools.Country
 import eu.hansolo.tilesfx.tools.FlowGridPane
 import javafx.application.Platform
+import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.layout.Background
 import javafx.scene.layout.BackgroundFill
@@ -25,12 +28,62 @@ import java.time.LocalTime
 import java.util.*
 
 class MainView : View(TITLE) {
-    private var gridSize = 4 to 2
-    private var tileSize = 0.0
-    override val root = borderpane {
+    private var tileSize = HEIGHT/3
+
+    override val root = pane() {
         setPrefSize(WIDTH, HEIGHT)
-        tileSize = HEIGHT/gridSize.second
-        center {
+        //alignment = Pos.CENTER
+        hbox {
+            addClass(Styles.zip)
+            alignment = Pos.CENTER
+            setPrefSize(tileSize, tileSize)
+            label("...")
+        }
+
+        val slimClock = ClockBuilder.create()
+                .prefSize(tileSize, tileSize)
+                .skinType(Clock.ClockSkinType.SLIM)
+                .secondColor(FOREGROUND)
+                .minuteColor(BLUE)
+                .hourColor(FOREGROUND)
+                .dateColor(FOREGROUND)
+                .locale(Locale.getDefault())
+                .running(true)
+                .build();
+        val slimClockTile = TileBuilder.create()
+                .prefSize(tileSize*2, tileSize*2)
+                .skinType(SkinType.CUSTOM)
+                .graphic(slimClock)
+                .build();
+
+        slimClockTile.attachTo(this){
+            layoutX = WIDTH/2 - tileSize
+            layoutY = HEIGHT/2 - tileSize
+        }
+
+        val clockTile = TileBuilder.create()
+                .prefSize(tileSize, tileSize)
+                .skinType(SkinType.CLOCK)
+                .title("Clock Tile")
+                .text("Whatever text")
+                .dateVisible(true)
+                .secondsVisible(false)
+                .secondColor(Color.AQUA)
+                .locale(Locale.getDefault())
+                .running(true)
+                .animated(false)
+                .build();
+        clockTile.attachTo(this)
+       /* hbox {
+            addClass(Styles.zip)
+            alignment = Pos.CENTER
+            setPrefSize(tileSize, tileSize)
+            label("If you can see this, you are successfully logged in!")
+            layoutX = WIDTH/2 - tileSize/2
+            layoutY = HEIGHT/2 - tileSize/2
+        }*/
+
+        /*center {
                 val clockTile = TileBuilder.create()
                         .prefSize(tileSize, tileSize)
                         .skinType(SkinType.CLOCK)
@@ -131,6 +184,6 @@ class MainView : View(TITLE) {
                     Platform.exit()
                 }
             }
-        }
+        }*/
     }
 }
