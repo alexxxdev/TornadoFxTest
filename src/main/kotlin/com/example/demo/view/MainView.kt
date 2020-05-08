@@ -11,7 +11,10 @@ import eu.hansolo.tilesfx.tools.Country
 import eu.hansolo.tilesfx.tools.FlowGridPane
 import javafx.application.Platform
 import javafx.scene.control.Button
+import javafx.scene.layout.Background
+import javafx.scene.layout.BackgroundFill
 import javafx.scene.paint.Color
+import javafx.scene.paint.Paint
 import javafx.stage.Stage
 import tornadofx.*
 import java.awt.*
@@ -28,9 +31,8 @@ class MainView : View(TITLE) {
         setPrefSize(WIDTH, HEIGHT)
         tileSize = HEIGHT/gridSize.second
         center {
-            //hbox {
                 val clockTile = TileBuilder.create()
-                        .prefSize(150.0, tileSize)
+                        .prefSize(tileSize, tileSize)
                         .skinType(SkinType.CLOCK)
                         .title("Clock Tile")
                         .text("Whatever text")
@@ -42,7 +44,7 @@ class MainView : View(TITLE) {
                         .animated(false)
                         .build();
                 val slimClock = ClockBuilder.create()
-                        .prefSize(150.0, tileSize)
+                        .prefSize(tileSize, tileSize)
                         .skinType(Clock.ClockSkinType.SLIM)
                         .secondColor(FOREGROUND)
                         .minuteColor(BLUE)
@@ -52,14 +54,14 @@ class MainView : View(TITLE) {
                         .running(true)
                         .build();
                 val slimClockTile = TileBuilder.create()
-                        .prefSize(150.0, tileSize)
+                        .prefSize(tileSize, tileSize)
                         .skinType(SkinType.CUSTOM)
                         .title("Medusa Clock")
                         .graphic(slimClock)
                         .textVisible(false)
                         .build();
                 val numberTile = TileBuilder.create()
-                        .prefSize(150.0, tileSize)
+                        .prefSize(tileSize, tileSize)
                         .skinType(SkinType.NUMBER)
                         .title("Number Tile")
                         .text("Whatever text")
@@ -69,7 +71,7 @@ class MainView : View(TITLE) {
                         .textVisible(true)
                         .build();
                 val timeTile = TileBuilder.create()
-                        .prefSize(150.0, tileSize)
+                        .prefSize(tileSize, tileSize)
                         .skinType(SkinType.TIME)
                         .title("Time Tile")
                         .text("Whatever text")
@@ -79,13 +81,13 @@ class MainView : View(TITLE) {
                         .build();
                 val stockTile = TileBuilder.create()
                         .skinType(SkinType.STOCK)
-                        .prefSize(150.0, tileSize)
+                        .prefSize(tileSize, tileSize)
                         .maxValue(1000.0)
                         .title("Stock Tile")
                         .textVisible(false)
                         .build();
             val countryTile = TileBuilder.create().skinType(SkinType.COUNTRY)
-                    .prefSize(150.0, tileSize)
+                    .prefSize(tileSize, tileSize)
                     .minValue(0.1)
                     .maxValue(40.0)
                     .value(5.6)
@@ -96,7 +98,7 @@ class MainView : View(TITLE) {
                     .animated(true)
                     .build();
             val plusMinusTile = TileBuilder.create()
-                    .prefSize(150.0, tileSize)
+                    .prefSize(tileSize, tileSize)
                     .skinType(SkinType.SWITCH_SLIDER)
                     .maxValue(30.0)
                     .minValue(0.0)
@@ -129,9 +131,6 @@ class MainView : View(TITLE) {
                     Platform.exit()
                 }
             }
-            //}
-
-
         }
     }
 }
