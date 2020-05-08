@@ -1,5 +1,8 @@
 package com.example.demo.view
 
+import com.example.demo.app.HEIGHT
+import com.example.demo.app.TITLE
+import com.example.demo.app.WIDTH
 import eu.hansolo.medusa.Clock
 import eu.hansolo.medusa.ClockBuilder
 import eu.hansolo.tilesfx.Tile.*
@@ -18,15 +21,16 @@ import java.awt.event.MouseEvent
 import java.time.LocalTime
 import java.util.*
 
-
-class MainView : View("Hello TornadoFX") {
-
+class MainView : View(TITLE) {
+    private var gridSize = 4 to 2
+    private var tileSize = 0.0
     override val root = borderpane {
-        setPrefSize(800.0, 480.0)
+        setPrefSize(WIDTH, HEIGHT)
+        tileSize = HEIGHT/gridSize.second
         center {
             //hbox {
                 val clockTile = TileBuilder.create()
-                        .prefSize(150.0, 150.0)
+                        .prefSize(150.0, tileSize)
                         .skinType(SkinType.CLOCK)
                         .title("Clock Tile")
                         .text("Whatever text")
@@ -38,7 +42,7 @@ class MainView : View("Hello TornadoFX") {
                         .animated(false)
                         .build();
                 val slimClock = ClockBuilder.create()
-                        .prefSize(150.0, 150.0)
+                        .prefSize(150.0, tileSize)
                         .skinType(Clock.ClockSkinType.SLIM)
                         .secondColor(FOREGROUND)
                         .minuteColor(BLUE)
@@ -48,14 +52,14 @@ class MainView : View("Hello TornadoFX") {
                         .running(true)
                         .build();
                 val slimClockTile = TileBuilder.create()
-                        .prefSize(150.0, 150.0)
+                        .prefSize(150.0, tileSize)
                         .skinType(SkinType.CUSTOM)
                         .title("Medusa Clock")
                         .graphic(slimClock)
                         .textVisible(false)
                         .build();
                 val numberTile = TileBuilder.create()
-                        .prefSize(150.0, 150.0)
+                        .prefSize(150.0, tileSize)
                         .skinType(SkinType.NUMBER)
                         .title("Number Tile")
                         .text("Whatever text")
@@ -65,7 +69,7 @@ class MainView : View("Hello TornadoFX") {
                         .textVisible(true)
                         .build();
                 val timeTile = TileBuilder.create()
-                        .prefSize(150.0, 150.0)
+                        .prefSize(150.0, tileSize)
                         .skinType(SkinType.TIME)
                         .title("Time Tile")
                         .text("Whatever text")
@@ -75,13 +79,13 @@ class MainView : View("Hello TornadoFX") {
                         .build();
                 val stockTile = TileBuilder.create()
                         .skinType(SkinType.STOCK)
-                        .prefSize(150.0, 150.0)
+                        .prefSize(150.0, tileSize)
                         .maxValue(1000.0)
                         .title("Stock Tile")
                         .textVisible(false)
                         .build();
             val countryTile = TileBuilder.create().skinType(SkinType.COUNTRY)
-                    .prefSize(150.0, 150.0)
+                    .prefSize(150.0, tileSize)
                     .minValue(0.1)
                     .maxValue(40.0)
                     .value(5.6)
@@ -92,7 +96,7 @@ class MainView : View("Hello TornadoFX") {
                     .animated(true)
                     .build();
             val plusMinusTile = TileBuilder.create()
-                    .prefSize(150.0, 150.0)
+                    .prefSize(150.0, tileSize)
                     .skinType(SkinType.SWITCH_SLIDER)
                     .maxValue(30.0)
                     .minValue(0.0)
@@ -113,7 +117,7 @@ class MainView : View("Hello TornadoFX") {
                     .graphic(b)
                     .roundedCorners(false)
                     .build();
-                FlowGridPane(4,3, clockTile, slimClockTile,numberTile,timeTile,stockTile, countryTile, plusMinusTile, customTile)
+                FlowGridPane(gridSize.first,gridSize.second, clockTile, slimClockTile,numberTile,timeTile,stockTile, countryTile, plusMinusTile, customTile)
                         .attachTo(this)
 
                 numberTile.value = 4.4

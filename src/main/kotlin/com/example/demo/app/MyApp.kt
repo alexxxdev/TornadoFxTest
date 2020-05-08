@@ -1,7 +1,6 @@
 package com.example.demo.app
 
 import com.example.demo.view.MainView
-import dorkbox.systemTray.SystemTray.TrayType
 import javafx.application.Platform
 import javafx.scene.image.Image
 import javafx.stage.Stage
@@ -11,53 +10,40 @@ import java.awt.*
 import java.awt.event.ActionListener
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
-import javax.swing.UIManager
 
+const val TITLE = "Title App Name"
+const val ICON = "icon.png"
+const val WIDTH = 800.0
+const val HEIGHT = 480.0
 
-
-
-
-class MyApp: App(MainView::class, Styles::class){
+class MyApp : App(MainView::class, Styles::class) {
     var trayIcon: TrayIcon? = null
-    //var stage: Stage? = null
+
     override fun start(stage: Stage) {
         Platform.setImplicitExit(false)
-        stage.initStyle(StageStyle.TRANSPARENT);
-        //stage.isFullScreen = true
-        //stage.fullScreenExitHint="ds"
-        //stage.isResizable = false
-        with(stage){
-            minWidth = 600.0
-            minHeight = 400.0
+        with(stage) {
+            initStyle(StageStyle.TRANSPARENT);
+            isResizable = false
+            //isFullScreen = true
+            //fullScreenExitHint="ds"
+            minWidth = WIDTH
+            minHeight = HEIGHT
+            icons.add(Image("/$ICON"))
         }
-        try {
-            stage.icons.add(Image("/icon.png"))
-        }catch (e:Exception){
-            e.printStackTrace();
-        }
+
         super.start(stage)
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
-        } catch (e: Throwable) {
-            e.printStackTrace();
-        }
         if (SystemTray.isSupported()) {
             val tray = SystemTray.getSystemTray()
-
-            val image: java.awt.Image = Toolkit.getDefaultToolkit().getImage(javaClass.classLoader.getResource("icon.png"))
+            val image: java.awt.Image = Toolkit.getDefaultToolkit().getImage(javaClass.classLoader.getResource(ICON))
             val exitListener = ActionListener {
                 println("Exiting...")
                 tray.remove(trayIcon)
                 Platform.exit()
-                //exitProcess(0)
             }
-
             val popup = PopupMenu()
             val defaultItem = MenuItem("Show")
             defaultItem.addActionListener(ActionListener {
-                Platform.runLater {
-                    stage?.show()
-                }
+                Platform.runLater { stage.show() }
             })
             val defaultItem1 = MenuItem("Exit")
             defaultItem1.addActionListener(exitListener)
@@ -65,25 +51,17 @@ class MyApp: App(MainView::class, Styles::class){
             popup.addSeparator()
             popup.add(defaultItem1)
 
-            /*val popup = JPopupMenu()
-            val defaultItem = JMenuItem("Exit",ImageIcon(javaClass.classLoader.getResource("icon.png")))
-            defaultItem.addActionListener(exitListener)
-            popup.add(defaultItem)*/
-            trayIcon = TrayIcon(image, "Tray Demo", popup)
+            trayIcon = TrayIcon(image, "sa", popup)
             val actionListener = ActionListener {
-                trayIcon!!.displayMessage("Action Event",
+                trayIcon?.displayMessage("Action Event",
                         "An Action Event Has Been Performed!",
                         TrayIcon.MessageType.INFO)
             }
-            trayIcon!!.isImageAutoSize = true
-            trayIcon!!.addActionListener(actionListener)
-            trayIcon!!.addMouseListener(object : MouseAdapter() {
+            trayIcon?.isImageAutoSize = true
+            trayIcon?.addActionListener(actionListener)
+            trayIcon?.addMouseListener(object : MouseAdapter() {
                 override fun mouseReleased(e: MouseEvent) {
-                    /*if (e.isPopupTrigger()) {
-                        popup.setLocation(e.getX(), e.getY())
-                        popup.invoker = popup
-                        popup.isVisible = true
-                    }*/
+                    Platform.runLater { stage.show() }
                 }
             })
             try {
@@ -114,8 +92,10 @@ class MyApp: App(MainView::class, Styles::class){
             }*/
         }
         stage.setOnCloseRequest {
-           // SystemTray.getSystemTray().remove(trayIcon)
-          //  Platform.exit()
+            /*if (SystemTray.isSupported()) {
+                SystemTray.getSystemTray().remove(trayIcon)
+                Platform.exit()
+            }*/
         }
     }
 }
