@@ -4,7 +4,6 @@ import com.example.demo.view.MainView
 import javafx.application.Platform
 import javafx.scene.image.Image
 import javafx.stage.Stage
-import javafx.stage.StageStyle
 import tornadofx.*
 import java.awt.*
 import java.awt.event.ActionListener
@@ -22,7 +21,7 @@ class MyApp : App(MainView::class, Styles::class) {
     override fun start(stage: Stage) {
         Platform.setImplicitExit(false)
         with(stage) {
-            initStyle(StageStyle.TRANSPARENT);
+            //initStyle(StageStyle.TRANSPARENT);
             isResizable = false
             //isFullScreen = true
             //fullScreenExitHint="ds"
